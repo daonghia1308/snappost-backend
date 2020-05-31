@@ -23,6 +23,9 @@ module.exports = {
       type: 'string',
       required: true
     },
+    dob: {
+      type: "string"
+    },
     phone: {
       type: 'string'
     },
@@ -65,6 +68,16 @@ module.exports = {
     isNewUser: {
       type: 'boolean',
       defaultsTo: true
+    },
+    isVerify: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    relationshipDetailId: {
+      model: "relationshipdetail"
+    },
+    nickname: {
+      type: 'string'
     }
   },
 

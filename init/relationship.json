@@ -1,0 +1,26 @@
+[
+    {
+        "name": "friend"
+    },
+    {
+        "name": "followed"
+    },
+    {
+        "name": "like"
+    },
+    {
+        "name": "share"
+    },
+    {
+        "name": "single"
+    },
+    {
+        "name": "isMarried"
+    },
+    {
+        "name": "dating"
+    },
+    {
+        "name": "isDead"
+    }
+]

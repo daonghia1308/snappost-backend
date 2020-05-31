@@ -1,5 +1,5 @@
 {
-  "name": "v-tube-backend",
+  "name": "snappost-backend",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
@@ -14,6 +14,7 @@
     "grunt": "1.0.4",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.25.3",
+    "path": "^0.12.7",
     "sails": "^1.2.4",
     "sails-hook-grunt": "^4.0.0",
     "sails-hook-orm": "^2.1.1",
