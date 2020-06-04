@@ -43,6 +43,7 @@ module.exports = {
   fn: async function (inputs, exits) {
     try {
       let { name, email, avatar, type, id } = inputs;
+      let idFriends = [];
       if (!name || !email || !avatar || !id || !type) {
         return exits.fail({
           code: 400,
@@ -54,6 +55,17 @@ module.exports = {
       if (type == "facebook") {
         let findUser = await User.findOne({ facebookId: id })
         if (findUser) {
+          let totalFriend = await User.getFriends(findUser.id);
+          totalFriend.map((e) => {
+            idFriends.push(e.id);
+          })
+          let onlineFriends = await User.find({
+            id: idFriends,
+            online: true
+          })
+          findUser.totalFriend = totalFriend.length;
+          findUser.onlineFriends = onlineFriends
+          await User.update({ id: findUser.id }).set({ online: true });
           return exits.success({
             code: 200,
             data: findUser
@@ -66,6 +78,8 @@ module.exports = {
           avatar,
           facebookId: id
         }).fetch();
+        createUser.totalFriend = 0;
+        createUser.onlineFriends = [];
         return exits.success({
           code: 200,
           data: createUser,
@@ -75,6 +89,17 @@ module.exports = {
       else if (type == 'google') {
         let findUser = await User.findOne({ googleId: id })
         if (findUser) {
+          let totalFriend = await User.getFriends(findUser.id);
+          totalFriend.map((e) => {
+            idFriends.push(e.id);
+          })
+          let onlineFriends = await User.find({
+            id: idFriends,
+            online: true
+          })
+          findUser.totalFriend = totalFriend.length;
+          findUser.onlineFriends = onlineFriends
+          await User.update({ id: findUser.id }).set({ online: true });
           return exits.success({
             code: 200,
             data: findUser
@@ -87,6 +112,8 @@ module.exports = {
           avatar,
           googleId: id
         }).fetch();
+        createUser.totalFriend = 0;
+        createUser.onlineFriends = [];
         return exits.success({
           code: 200,
           data: createUser,

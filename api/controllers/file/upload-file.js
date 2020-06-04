@@ -30,8 +30,8 @@ module.exports = {
       type: 'ref',
       required: true
     },
-    employeeId: {
-      type: 'number'
+    user: {
+      type: 'string'
     }
   },
 
@@ -54,8 +54,8 @@ module.exports = {
           message: 'Không có file được upload!',
         });
       }
-      let findEmployee = await User.findOne({id: inputs.employeeId});
-      if (!findEmployee) {
+      let findUser = await User.findOne(user);
+      if (!findUser) {
         return exits.fail({
           code: 1,
           message: 'Không tìm thấy nhân viên!'
@@ -83,7 +83,7 @@ module.exports = {
         tmp.fileType = v.type;
         tmp.status = v.status;
         tmp.field = v.field;
-        tmp.employee = inputs.employeeId;
+        tmp.uploadBy = inputs.user;
         try {
           await moveFile(v.fd, FileUpload.getFilePath(tmp));
           filesCreate.push(tmp);

@@ -8,7 +8,7 @@ module.exports = {
 
 
   inputs: {
-    username: {
+    email: {
       type: "string"
     },
     password: {
@@ -32,24 +32,35 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let { username, password } = inputs;
-      if (!username || !password) {
+      let { email, password } = inputs;
+      let idFriends = [];
+      if (!email || !password) {
         return exits.fail({
           code: 400,
           message: "Username and password must be filled!"
         })
       }
-      let findUser = await User.findOne({ username: username });
+      let findUser = await User.findOne({ email: email });
       if (!findUser) {
         return exits.fail({
           code: 400,
           message: "User not exist"
         })
       }
-      let check = await sails.helpers.password.check(password)
+      let check = await sails.helpers.password.check(password, findUser.password)
       if (check) {
-        delete findUser.password;
         findUser.token = await sails.helpers.jwt.sign(findUser);
+        let totalFriend = await User.getFriends(findUser.id);
+        totalFriend.map((e) => {
+          idFriends.push(e.id);
+        })
+        let onlineFriends = await User.find({
+          id: idFriends,
+          online: true
+        })
+        findUser.totalFriend = totalFriend.length;
+        findUser.onlineFriends = onlineFriends
+        await User.update({id: findUser.id}).set({online: true});
         return exits.success({
           code: 200,
           data: findUser,

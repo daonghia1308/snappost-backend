@@ -35,7 +35,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
 
-  schema: true,
+  schema: false,
 
 
   /***************************************************************************
@@ -53,7 +53,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
 
-  migrate: 'alter',
+  migrate: 'safe',
 
 
   /***************************************************************************
@@ -70,7 +70,7 @@ module.exports.models = {
 
   attributes: {
     created_at: { type: 'ref', columnType: 'date', autoCreatedAt: true, },
-    updated_at: {  type: 'ref', columnType: 'date', autoUpdatedAt: true, },
+    updated_at: { type: 'ref', columnType: 'date', autoUpdatedAt: true, },
     id: { type: 'string', columnName: '_id' },
     //--------------------------------------------------------------------------
     //  /\   Using MongoDB?

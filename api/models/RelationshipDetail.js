@@ -6,17 +6,25 @@
  */
 
 module.exports = {
-
+  TYPE: {
+    FRIEND: 1,
+    SINGLE: 2,
+    ISMARRIED: 3,
+    DATING: 4,
+    ISDEAD: 5,
+    FOLLOWED: 6
+  },
   attributes: {
     user: {
       model: 'User'
     },
-    idAction: {
-      type: 'number',
-      description: 'Id của bài like, share, người dùng ...'
+    otherUser: {  
+      model: 'User',
+      description: 'Id người dùng với hành động'
     },
-    relationshipId: {
-      model: 'Relationship'
+    type: {
+      type: 'number',
+      description: 'type of action'
     },
   },
 

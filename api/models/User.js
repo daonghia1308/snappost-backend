@@ -8,10 +8,12 @@
 module.exports = {
   attributes: {
     firstName: {
-      type: 'string'
+      type: 'string',
+      columnType: 'text CHARACTER SET utf8mb4'
     },
     lastName: {
-      type: 'string'
+      type: 'string',
+      columnType: 'text CHARACTER SET utf8mb4'
     },
     email: {
       type: 'string',
@@ -59,11 +61,11 @@ module.exports = {
     },
     online: {
       type: 'boolean',
-      defaultsTo: false 
+      defaultsTo: false
     },
     isBan: {
       type: 'boolean',
-      defaultsTo: false 
+      defaultsTo: false
     },
     isNewUser: {
       type: 'boolean',
@@ -77,9 +79,39 @@ module.exports = {
       model: "relationshipdetail"
     },
     nickname: {
-      type: 'string'
+      type: 'string',
+      columnType: 'text CHARACTER SET utf8mb4'
     }
   },
-
+  customToJSON: function () {
+    // Return a shallow copy of this record with the password and ssn removed.
+    return _.omit(this, ['password', 'facebookId', 'googleId'])
+  },
+  getFriends: async (userId) => {
+    let rs = await cache.get(`userFriend_${userId}`);
+    let data = [];
+    if (rs) {
+      return rs
+    }
+    else {
+      let friends = await RelationshipDetail.find({
+        type: 1,
+        or: [
+          { user: userId },
+          { otherUser: userId }
+        ],
+      }).populate(['user', 'otherUser']);
+      friends.map((e) => {
+        if (e.user['id'] == userId) {
+          data.push(e.otherUser)
+        }
+        else if (e.otherUser['id'] == userId) {
+          data.push(e.user)
+        }
+      })
+      await cache.set(`userFriend_${userId}`, friends);
+      return data
+    }
+  }
 };
 
