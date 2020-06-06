@@ -9,10 +9,10 @@ module.exports = {
 
   inputs: {
     limit: {
-      type: number,
+      type: 'number',
     },
     skip: {
-      type: number,
+      type: 'number',
     }
   },
 
