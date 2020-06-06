@@ -48,7 +48,7 @@ module.exports = {
     ***************************************************************************/
     default: {
       adapter: 'sails-mongo',
-      url: 'mongodb://snappost:snappost@cluster0-shard-00-00-t1hax.gcp.mongodb.net:27017/snappost'
+      url: "mongodb+srv://snappost:snappost@cluster0-t1hax.gcp.mongodb.net/snappost?w=majority"
       //  /\   To avoid checking it in to version control, you might opt to set
       //  ||   sensitive credentials like `url` using an environment variable.
       //
