@@ -51,7 +51,7 @@ module.exports = {
         })
       }
       let firstName = name.split(" ")[0];
-      let lastName = name.split(" ")[1];
+      let lastName = name.split(" ")[1] ? name.split(" ")[1] : "";
       if (type == "facebook") {
         let findUser = await User.findOne({ facebookId: id })
         if (findUser) {
@@ -64,7 +64,7 @@ module.exports = {
             online: true
           })
           findUser.totalFriend = totalFriend.length;
-          findUser.onlineFriends = onlineFriends
+          findUser.onlineFriends = onlineFriends;
           await User.update({ id: findUser.id }).set({ online: true });
           return exits.success({
             code: 200,

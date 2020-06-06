@@ -8,19 +8,11 @@
 module.exports = {
 
   attributes: {
-    title: {
-      type: 'string',
-      columnType: 'text CHARACTER SET utf8mb4'
-    },
     content: {
       type: 'string',
       columnType: 'text CHARACTER SET utf8mb4'
     },
     images: {
-      type: 'json',
-      defaultsTo: []
-    },
-    files: {
       type: 'json',
       defaultsTo: []
     },
@@ -31,13 +23,25 @@ module.exports = {
     postBy: {
       model: 'User'
     },
-    isShare: {
+    isShared: {
       type: 'boolean',
       defaultsTo: false
     },
     shareBy: {
       model: 'User'
+    },
+    totalLike: {
+      type: 'number'
+    },
+    isDelete: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    ranking: {
+      type: 'number',
+      defaultsTo: 1500
     }
+
   },
 
 };

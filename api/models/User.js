@@ -22,8 +22,7 @@ module.exports = {
       required: true
     },
     password: {
-      type: 'string',
-      required: true
+      type: 'string'
     },
     dob: {
       type: "string"
