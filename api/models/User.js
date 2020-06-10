@@ -36,6 +36,10 @@ module.exports = {
     avatar: {
       type: 'string'
     },
+    verifyMail: {
+      type: "boolean",
+      defaultsTo: false
+    },
     facebookId: {
       type: 'string'
     },

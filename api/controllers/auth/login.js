@@ -43,13 +43,13 @@ module.exports = {
       let findUser = await User.findOne({ email: email });
       if (!findUser) {
         return exits.fail({
-          code: 400,
+          code: 404,
           message: "User not exist"
         })
       }
       let check = await sails.helpers.password.check(password, findUser.password)
       if (check) {
-        findUser.token = await sails.helpers.jwt.sign(findUser);
+        let token = await sails.helpers.jwt.sign(findUser);
         let totalFriend = await User.getFriends(findUser.id);
         totalFriend.map((e) => {
           idFriends.push(e.id);
@@ -60,10 +60,11 @@ module.exports = {
         })
         findUser.totalFriend = totalFriend.length;
         findUser.onlineFriends = onlineFriends
-        await User.update({id: findUser.id}).set({online: true});
+        await User.update({ id: findUser.id }).set({ online: true });
         return exits.success({
-          code: 200,
+          code: 0,
           data: findUser,
+          token
         })
       }
       else {
