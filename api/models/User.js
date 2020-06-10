@@ -112,9 +112,28 @@ module.exports = {
           data.push(e.user)
         }
       })
-      await cache.set(`userFriend_${userId}`, friends);
+      await cache.set(`userFriend_${userId}`, data);
       return data
     }
+  },
+  refreshFriendCache: async (userId) => {
+    let data = [];
+    let friends = await RelationshipDetail.find({
+      type: 1,
+      or: [
+        { user: userId },
+        { otherUser: userId }
+      ],
+    }).populate(['user', 'otherUser']);
+    friends.map((e) => {
+      if (e.user['id'] == userId) {
+        data.push(e.otherUser)
+      }
+      else if (e.otherUser['id'] == userId) {
+        data.push(e.user)
+      }
+    })
+    await cache.set(`userFriend_${userId}`, data);
   }
 };
 
