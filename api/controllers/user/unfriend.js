@@ -35,10 +35,26 @@ module.exports = {
           message: 'Missing user id!'
         })
       }
+      let friends = await cache.get(`userFriend_${user.id}`);
+      friends = friends.map((e) => {
+        return e.id
+      })
+      if (!friends.includes(id)) {
+        return exits.fail({
+          code: 400,
+          message: 'Friend not exist!'
+        })
+      }
       await RelationshipDetail.destroy({
         or: [
-          { user: { in: [id, user.id] } },
-          { otherUser: { in: [id, user.id] } }
+          {
+            user: id,
+            otherUser: user.id
+          },
+          {
+            user: user.id,
+            otherUser: id
+          }
         ]
       })
       return exits.success({

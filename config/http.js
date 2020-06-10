@@ -24,6 +24,7 @@ module.exports.http = {
       'bodyParser',
       'compress',
       'logApiCall',
+      'updateCache',
       'poweredBy',
       'router',
       'www',
@@ -51,7 +52,21 @@ module.exports.http = {
         return next();
       }
     })(),
+    updateCache: (() => {
+      return async (req, res, next) => {
+        res.on('finish', async () => {
+          if (res.statusCode !== 200) {
+            return;
+          }
+          if (req.url.includes('handle-friend-request') || req.url.includes('unfriend')) {
+            let { user } = req;
+            await User.refreshFriendCache(user.id);
+          }
 
+        });
+        return next();
+      }
+    })(),
     bodyParser: (function _configureBodyParser() {
       var skipper = require('skipper');
       var middlewareFn = skipper({ strict: true, maxTimeToBuffer: 20000, limit: '20mb' });
