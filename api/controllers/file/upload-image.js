@@ -46,6 +46,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
+      let {user} = this.req;
       let w = inputs.width;
       let h = inputs.height;
       let info = await sails.upload(inputs.images);
@@ -78,6 +79,7 @@ module.exports = {
         tmp.fileType = v.type;
         tmp.status = v.status;
         tmp.field = v.field;
+        tmp.uploadBy = user.id;
         if (FileUpload.isImage(tmp)) {
           let tempPromise = sharp(v.fd);
           if (w && h) {

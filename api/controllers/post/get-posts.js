@@ -34,7 +34,7 @@ module.exports = {
     try {
       let { user } = this.req;
       let { limit, skip } = inputs;
-      let userFriends = await cache.get(`userFriend_${userId}`);
+      let userFriends = await cache.get(`userFriend_${user.id}`);
       userFriends.map((e) => {
         return e.id;
       })
@@ -42,12 +42,20 @@ module.exports = {
       skip = skip || 0;
       let findPosts = await Post.find({
         where: {
-          postBy: userFriends
+          or: [
+            {
+              postBy: userFriends
+            },
+            {
+              postBy: user.id
+            }
+          ]
+          
         },
         limit: limit,
-        offset: skip,
+        skip: skip,
         sort: ['created_at DESC', 'ranking DESC']
-      })
+      }).populate('postBy')
       // if (findPosts.length > 0) {
       //   for (let i = 0; i < findPosts.length; i++) {
       //     let totalComment = await Comment.find({ post: findPosts[i].id });

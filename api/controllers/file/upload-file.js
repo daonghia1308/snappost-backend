@@ -30,9 +30,6 @@ module.exports = {
       type: 'ref',
       required: true
     },
-    user: {
-      type: 'string'
-    }
   },
 
   exits: {
@@ -48,18 +45,12 @@ module.exports = {
   fn: async function (inputs, exits) {
     try {
       let info = await sails.upload(inputs.files);
+      let {user} = this.req;
       if (info.length === 0) {
         return exits.fail({
           code: 1,
           message: 'Không có file được upload!',
         });
-      }
-      let findUser = await User.findOne(user);
-      if (!findUser) {
-        return exits.fail({
-          code: 1,
-          message: 'Không tìm thấy nhân viên!'
-        })
       }
       let fileUploadTmp = {
         fileName: '',
@@ -83,7 +74,7 @@ module.exports = {
         tmp.fileType = v.type;
         tmp.status = v.status;
         tmp.field = v.field;
-        tmp.uploadBy = inputs.user;
+        tmp.uploadBy = user.id;
         try {
           await moveFile(v.fd, FileUpload.getFilePath(tmp));
           filesCreate.push(tmp);

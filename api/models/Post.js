@@ -33,10 +33,6 @@ module.exports = {
     totalLike: {
       type: 'number'
     },
-    isDelete: {
-      type: 'boolean',
-      defaultsTo: false
-    },
     ranking: {
       type: 'number',
       defaultsTo: 1500

@@ -38,7 +38,7 @@ module.exports = {
           message: 'Missing content or postId!'
         })
       }
-      parentId ? parent = parentId : parent = 0;
+      parent = parentId ? parentId : '0';
       let data = {
         content,
         user: user.id,
