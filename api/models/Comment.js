@@ -8,11 +8,11 @@
 module.exports = {
 
   attributes: {
-    content: {type: 'string', required: true},
-    totalLike: {type: 'number'},
-    user: {model: 'User'},
-    parent: {type: 'number', defaultsTo: 0},
-    post: {model: 'Post'}
+    content: { type: 'string', required: true },
+    totalLike: { type: 'number', defaultsTo: 0 },
+    user: { model: 'User' },
+    parent: { type: 'number', defaultsTo: 0 },
+    post: { model: 'Post' }
   },
 
 };

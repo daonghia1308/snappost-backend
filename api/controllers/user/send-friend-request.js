@@ -46,16 +46,32 @@ module.exports = {
           message: 'User not exist!'
         })
       }
+      let findFriend = await RelationshipDetail.findOne({
+        type: 1,
+        or: [
+          {
+            user: user.id,
+            otherUser: id
+          },
+          {
+            user: id,
+            otherUser: user.id
+          }
+        ]
+      })
+      if (findFriend) {
+        return exits.fail({
+          code: 1,
+          message: 'You are already friend'
+        })
+      }
       let findRequest = await FriendRequest.findOne({
         from: user.id,
         to: id
       })
       if (findRequest) {
         await FriendRequest.destroy({ id: findRequest.id });
-        await RelationshipDetail.destroy({
-          user: user.id,
-          otherUser: id
-        })
+        await RelationshipDetail.destroy({user: user.id, otherUser: id, type: 6})
       }
       else {
         createRequest = await FriendRequest.create({

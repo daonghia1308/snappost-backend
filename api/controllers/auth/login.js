@@ -36,7 +36,7 @@ module.exports = {
       let idFriends = [];
       if (!email || !password) {
         return exits.fail({
-          code: 400,
+          code: 1,
           message: "Username and password must be filled!"
         })
       }
@@ -69,13 +69,13 @@ module.exports = {
       }
       else {
         return exits.fail({
-          code: 400,
+          code: 1,
           message: "Wrong password!"
         })
       }
     } catch (error) {
       return exits.serverError({
-        code: 500,
+        code: 1,
         error: error.message,
         message: "System error!"
       })

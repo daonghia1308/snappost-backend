@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
                 ward: 0,
                 country: 0,
                 isActive: true,
-                online: false,
+                online: true,
                 isBan: false,
                 isNewUser: true,
                 isVerify: false,
@@ -80,6 +80,29 @@ module.exports = async (req, res, next) => {
                 isVerify: false,
                 nickname: "",
                 relationshipDetailId: null,
+            }
+        }
+        else if (token == 'dev4') {
+            user = {
+                id: "5ed4c04c3c3f4a3aa4a21b62",
+                firstName: "Tran Xuan",
+                lastName: "Bach",
+                email: "bachtx@gmail.com",
+                dob: "",
+                phone: "0977059294",
+                gender: 1,
+                avatar: "",
+                wallImage: "",
+                province: 0,
+                ward: 0,
+                country: 0,
+                isActive: true,
+                online: true,
+                isBan: false,
+                isNewUser: true,
+                isVerify: false,
+                nickname: "",
+                relationshipDetailId: null
             }
         }
         else {

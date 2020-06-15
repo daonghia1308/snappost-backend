@@ -46,7 +46,7 @@ module.exports = {
       let idFriends = [];
       if (!name || !email || !avatar || !id || !type) {
         return exits.fail({
-          code: 400,
+          code: 1,
           message: "Missing data body!"
         })
       }
@@ -67,7 +67,7 @@ module.exports = {
           findUser.onlineFriends = onlineFriends;
           await User.update({ id: findUser.id }).set({ online: true });
           return exits.success({
-            code: 200,
+            code: 0,
             data: findUser
           })
         }
@@ -81,7 +81,7 @@ module.exports = {
         createUser.totalFriend = 0;
         createUser.onlineFriends = [];
         return exits.success({
-          code: 200,
+          code: 0,
           data: createUser,
           message: "Create user success!"
         })
@@ -101,7 +101,7 @@ module.exports = {
           findUser.onlineFriends = onlineFriends
           await User.update({ id: findUser.id }).set({ online: true });
           return exits.success({
-            code: 200,
+            code: 0,
             data: findUser
           })
         }
@@ -115,7 +115,7 @@ module.exports = {
         createUser.totalFriend = 0;
         createUser.onlineFriends = [];
         return exits.success({
-          code: 200,
+          code: 0,
           data: createUser,
           message: "Create user success!"
         })
@@ -123,7 +123,7 @@ module.exports = {
 
     } catch (error) {
       return exits.serverError({
-        code: 500,
+        code: 1,
         error: error.message,
         message: "System error!"
       })

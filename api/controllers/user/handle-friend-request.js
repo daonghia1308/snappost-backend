@@ -13,7 +13,8 @@ module.exports = {
       description: 'Id friend request'
     },
     status: {
-      type: 'number'
+      type: 'number', 
+      description: '1: accept friend '
     }
   },
 
@@ -61,6 +62,7 @@ module.exports = {
           type: 1
         })
       }
+      await User.refreshFriendCache(findRequest.from);
       await FriendRequest.destroy({id: findRequest.id});
       return exits.success({
         code: 0,
