@@ -53,7 +53,12 @@ module.exports = {
       let firstName = name.split(" ")[0];
       let lastName = name.split(" ")[1] ? name.split(" ")[1] : "";
       if (type == "facebook") {
-        let findUser = await User.findOne({ facebookId: id })
+        let findUser = await User.findOne({ facebookId: id });
+
+        if (!findUser) {
+          findUser = await User.findOne({ email })
+        }
+
         if (findUser) {
           let totalFriend = await User.getFriends(findUser.id);
           totalFriend.map((e) => {
@@ -65,10 +70,14 @@ module.exports = {
           })
           findUser.totalFriend = totalFriend.length;
           findUser.onlineFriends = onlineFriends;
-          await User.update({ id: findUser.id }).set({ online: true });
+
+          let token = await sails.helpers.jwt.sign(findUser);
+
+          await User.update({ id: findUser.id }).set({ online: true, facebookId: id });
           return exits.success({
-            code: 200,
-            data: findUser
+            code: 0,
+            data: findUser,
+            token
           })
         }
         let createUser = await User.create({
@@ -78,16 +87,24 @@ module.exports = {
           avatar,
           facebookId: id
         }).fetch();
+
         createUser.totalFriend = 0;
         createUser.onlineFriends = [];
+        let token = await sails.helpers.jwt.sign(createUser);
+
         return exits.success({
-          code: 200,
+          code: 0,
           data: createUser,
-          message: "Create user success!"
+          token,
         })
       }
       else if (type == 'google') {
         let findUser = await User.findOne({ googleId: id })
+
+        if (!findUser) {
+          findUser = await User.findOne({ email })
+        }
+
         if (findUser) {
           let totalFriend = await User.getFriends(findUser.id);
           totalFriend.map((e) => {
@@ -99,12 +116,17 @@ module.exports = {
           })
           findUser.totalFriend = totalFriend.length;
           findUser.onlineFriends = onlineFriends
-          await User.update({ id: findUser.id }).set({ online: true });
+
+          let token = await sails.helpers.jwt.sign(findUser);
+
+          await User.update({ id: findUser.id }).set({ online: true, googleId: id });
           return exits.success({
-            code: 200,
-            data: findUser
+            code: 0,
+            data: findUser,
+            token
           })
         }
+
         let createUser = await User.create({
           firstName,
           lastName,
@@ -114,10 +136,13 @@ module.exports = {
         }).fetch();
         createUser.totalFriend = 0;
         createUser.onlineFriends = [];
+
+        let token = await sails.helpers.jwt.sign(createUser);
+
         return exits.success({
-          code: 200,
+          code: 0,
           data: createUser,
-          message: "Create user success!"
+          token
         })
       }
 

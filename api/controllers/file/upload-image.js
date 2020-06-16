@@ -50,7 +50,7 @@ module.exports = {
       let h = inputs.height;
       let info = await sails.upload(inputs.images);
       if (info.length === 0) {
-        return res.badRequest({
+        return this.res.badRequest({
           message: sails.__('Không có file được upload!'),
         });
       }

@@ -22,6 +22,19 @@ module.exports = {
       return false;
     }
   },
+  getLinkFile: function (fileUpload) {
+    if (!fileUpload.fileType.toLowerCase().includes('image')) {
+      return {
+        status: true,
+        url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+      }
+    } else {
+      return {
+        status: false,
+        url: ""
+      }
+    }
+  },
   getLinkImage: function (fileUpload) {
     if (!FileUpload.isImage(fileUpload)) {
       return {
@@ -32,7 +45,7 @@ module.exports = {
     return {
       status: true,
       // url: (cacheService.getCacheConfig().base_url || process.env.BASE_URL || sails.config.custom.baseUrl) + '/' + fileUpload.serverFileName
-      url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileName
+      url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
     };
   },
   attributes: {
@@ -64,8 +77,9 @@ module.exports = {
     uploadBy: { model: 'User' }
   },
   customToJSON: function () {
-    let link = FileUpload.getLinkImage(this);
-    if (link.status && this.serverFileDir === 'images') {
+    let link = this.serverFileDir === 'images' ? FileUpload.getLinkImage(this) : FileUpload.getLinkFile(this);
+
+    if (link.status) {
       this.url = link.url;
     }
     return this;

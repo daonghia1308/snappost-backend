@@ -47,6 +47,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
+      let { user } = this.req;
       let info = await sails.upload(inputs.files);
       if (info.length === 0) {
         return exits.fail({
@@ -54,7 +55,7 @@ module.exports = {
           message: 'Không có file được upload!',
         });
       }
-      let findUser = await User.findOne(user);
+      let findUser = await User.findOne(user.id);
       if (!findUser) {
         return exits.fail({
           code: 1,
