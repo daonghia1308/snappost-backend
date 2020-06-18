@@ -31,7 +31,7 @@ module.exports = {
       if (!commentId) {
         return exits.fail({
           code: 1,
-          message: 'Missing commentId!'s
+          message: 'Missing commentId!'
         })
       }
       await Comment.updateOne(commentId, {isDelete: true});
