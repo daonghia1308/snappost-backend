@@ -46,7 +46,7 @@ module.exports = {
       let idFriends = [];
       if (!name || !email || !avatar || !id || !type) {
         return exits.fail({
-          code: 400,
+          code: 1,
           message: "Missing data body!"
         })
       }
@@ -148,7 +148,7 @@ module.exports = {
 
     } catch (error) {
       return exits.serverError({
-        code: 500,
+        code: 1,
         error: error.message,
         message: "System error!"
       })

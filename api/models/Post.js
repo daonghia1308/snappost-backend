@@ -16,6 +16,10 @@ module.exports = {
       type: 'json',
       defaultsTo: []
     },
+    videos: {
+      type: 'json',
+      defaultsTo: []
+    },
     mentions: {
       type: 'json',
       defaultsTo: []
@@ -32,10 +36,6 @@ module.exports = {
     },
     totalLike: {
       type: 'number'
-    },
-    isDelete: {
-      type: 'boolean',
-      defaultsTo: false
     },
     ranking: {
       type: 'number',

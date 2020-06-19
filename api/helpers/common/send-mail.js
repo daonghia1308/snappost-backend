@@ -19,9 +19,6 @@ module.exports = {
 
     exits: {
 
-        success: {
-            statusCode: 200
-        },
 
     },
 

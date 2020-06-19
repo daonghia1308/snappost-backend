@@ -48,7 +48,7 @@ module.exports = {
 
     } catch (error) {
       return exits.serverError({
-        code: 500,
+        code: 1,
         error: error.message,
         message: "System encouter a problem. Try again."
       })

@@ -36,14 +36,14 @@ module.exports = {
       let friends = await User.getFriends(user.id);
       let totalPage = Math.ceil(friends.length / limit);
       return exits.success({
-        code: 200,
+        code: 0,
         data: friends.slice(offset).slice(0, limit ? limit : 10),
         totalRecord: friends.length,
         totalPage
       })
     } catch (error) {
       return exits.serverError({
-        code: 500,
+        code: 1,
         error: error.message,
         message: 'System error!'
       })

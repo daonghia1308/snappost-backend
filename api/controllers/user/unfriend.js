@@ -41,7 +41,7 @@ module.exports = {
       })
       if (!friends.includes(id)) {
         return exits.fail({
-          code: 400,
+          code: 1,
           message: 'Friend not exist!'
         })
       }
@@ -57,6 +57,7 @@ module.exports = {
           }
         ]
       })
+      await User.refreshFriendCache(id);
       return exits.success({
         code: 0,
         message: 'Unfriend successfully!'

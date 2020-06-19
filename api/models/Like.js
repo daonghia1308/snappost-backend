@@ -12,7 +12,8 @@ module.exports = {
   },
   attributes: {
     user: {model: 'User'},
-    type: {type: 'number'}
+    type: {type: 'number'},
+    idLiked: {type: 'string', description: 'Id cua bai dang duoc like hoac comment dc like'}
   },
 
 };

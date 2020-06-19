@@ -48,7 +48,7 @@ module.exports = {
       let findUser = await User.findOne({ email: email });
       if (findUser) {
         return exits.fail({
-          code: 400,
+          code: 1,
           message: "User has existed!"
         })
       }
@@ -86,7 +86,7 @@ module.exports = {
       })
     } catch (error) {
       return exits.serverError({
-        code: 500,
+        code: 1,
         error: error.message,
         message: "System encouter a problem. Try again."
       })

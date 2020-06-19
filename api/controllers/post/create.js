@@ -8,9 +8,9 @@ module.exports = {
 
 
   inputs: {
-    content: { type: 'string'},
-    images: {type: 'json'},
-    mentions: {type: 'json'},
+    content: { type: 'string' },
+    images: { type: 'json' },
+    mentions: { type: 'json' },
   },
 
 
@@ -29,16 +29,23 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {content, images, mentions} = inputs;
-      let {user} = this.req;
+      let { content, images, videos, mentions } = inputs;
+      let { user } = this.req;
+      if (!content && !images) {
+        return exits.fail({
+          code: 1,
+          message: 'Missing data body!'
+        })
+      }
       let createPost = await Post.create({
         postBy: user.id,
-        content, 
-        images, 
-        mentions, 
-        shareBy: 0
+        content,
+        images,
+        videos,
+        mentions,
+        shareBy: null
       }).fetch();
-      return exists.success({
+      return exits.success({
         code: 0,
         data: createPost
       })

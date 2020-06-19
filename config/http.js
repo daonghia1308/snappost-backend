@@ -58,7 +58,7 @@ module.exports.http = {
           if (res.statusCode !== 200) {
             return;
           }
-          if (req.url.includes('handle-friend-request') || req.url.includes('unfriend')) {
+          if (req.url.includes('handle-friend-request') || req.url.includes('unfriend') || req.url.includes('get-list-friend-request')) {
             let { user } = req;
             await User.refreshFriendCache(user.id);
           }
