@@ -26,7 +26,6 @@ module.exports = {
     default: {
       adapter: 'sails-mongo',
       url: "mongodb://snappost:snappost@cluster0-shard-00-00-t1hax.gcp.mongodb.net:27017,cluster0-shard-00-01-t1hax.gcp.mongodb.net:27017,cluster0-shard-00-02-t1hax.gcp.mongodb.net:27017/snappost?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority"
- 
       // ssl: true,
 
     },
