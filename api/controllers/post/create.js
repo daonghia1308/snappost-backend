@@ -9,7 +9,7 @@ module.exports = {
 
   inputs: {
     content: { type: 'string' },
-    images: { type: 'json' },
+    upload: { type: 'json' },
     mentions: { type: 'json' },
   },
 
@@ -29,7 +29,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let { content, images, videos, mentions } = inputs;
+      let { content, upload, mentions } = inputs;
       let { user } = this.req;
       if (!content && !images) {
         return exits.fail({
@@ -40,8 +40,7 @@ module.exports = {
       let createPost = await Post.create({
         postBy: user.id,
         content,
-        images,
-        videos,
+        upload,
         mentions,
         shareBy: null
       }).fetch();
