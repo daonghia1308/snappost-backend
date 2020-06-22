@@ -104,7 +104,11 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cors: {
-      allowOrigins: ["http://localhost", "http://35.232.6.168"]
+      // allowOrigins: ["http://localhost", "http://35.232.6.168"],
+      allowOrigins: '*',
+      allowCredentials: false,
+      allowRequestHeaders: 'Content-Type, Accept,Authorization',
+      allowRequestMethods: 'GET, POST, PUT,PATCH,DELETE',
     },
 
   },
