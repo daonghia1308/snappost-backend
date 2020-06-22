@@ -63,7 +63,7 @@ module.exports = {
   session: {
 
     cookie: {
-      // secure: true,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,  // 24 hours
     },
 
@@ -90,7 +90,7 @@ module.exports = {
     cache: 365.25 * 24 * 60 * 60 * 1000, // One year
 
 
-    // trustProxy: true,
+    trustProxy: true,
 
   },
 
