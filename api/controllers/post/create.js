@@ -8,9 +8,9 @@ module.exports = {
 
 
   inputs: {
-    content: { type: 'string'},
-    images: {type: 'json'},
-    mentions: {type: 'json'},
+    content: { type: 'string' },
+    upload: { type: 'json' },
+    mentions: { type: 'json' },
   },
 
 
@@ -29,8 +29,8 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {content, images, mentions} = inputs;
-      let {user} = this.req;
+      let { content, upload, mentions } = inputs;
+      let { user } = this.req;
       if (!content && !images) {
         return exits.fail({
           code: 1,
@@ -39,9 +39,9 @@ module.exports = {
       }
       let createPost = await Post.create({
         postBy: user.id,
-        content, 
-        images, 
-        mentions, 
+        content,
+        upload,
+        mentions,
         shareBy: null
       }).fetch();
       return exits.success({

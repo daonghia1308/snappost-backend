@@ -27,14 +27,14 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {commentId} = inputs;
+      let { commentId } = inputs;
       if (!commentId) {
         return exits.fail({
           code: 1,
           message: 'Missing commentId!'
         })
       }
-      await Comment.updateOne(commentId, {isDelete: true});
+      await Comment.updateOne(commentId, { isDelete: true });
       return exits.success({
         code: 0,
         message: 'Comment deleted successfully!'

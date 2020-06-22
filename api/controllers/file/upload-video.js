@@ -44,8 +44,8 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
+      let { user } = this.req;
       let info = await sails.upload(inputs.files);
-      let {user} = this.req;
       if (info.length === 0) {
         return exits.fail({
           code: 1,
@@ -69,7 +69,7 @@ module.exports = {
         let tmp = Object.assign({}, fileUploadTmp);
         tmp.fileName = v.filename;
         tmp.serverFileName = path.basename(v.fd);
-        tmp.serverFileDir = 'other';
+        tmp.serverFileDir = 'video';
         tmp.size = v.size;
         tmp.fileType = v.type;
         tmp.status = v.status;

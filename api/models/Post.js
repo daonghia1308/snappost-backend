@@ -12,7 +12,7 @@ module.exports = {
       type: 'string',
       columnType: 'text CHARACTER SET utf8mb4'
     },
-    images: {
+    upload: {
       type: 'json',
       defaultsTo: []
     },

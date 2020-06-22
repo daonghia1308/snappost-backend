@@ -35,8 +35,9 @@ module.exports = {
       let { user } = this.req;
       let { limit, skip } = inputs;
       let userFriends = await cache.get(`userFriend_${user.id}`);
+      let userFriendId = []
       userFriends.map((e) => {
-        return e.id;
+        userFriendId.push(e.id)
       })
       limit = limit || 10;
       skip = skip || 0;
@@ -44,13 +45,13 @@ module.exports = {
         where: {
           or: [
             {
-              postBy: userFriends
+              postBy: { in: userFriendId }
             },
             {
               postBy: user.id
             }
           ]
-          
+
         },
         limit: limit,
         skip: skip,

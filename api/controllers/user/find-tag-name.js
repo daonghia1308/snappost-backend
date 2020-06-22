@@ -8,9 +8,9 @@ module.exports = {
 
 
   inputs: {
-    name: {type: 'string'},
-    skip: {type: 'number'},
-    limit: {type: 'number'}
+    name: { type: 'string' },
+    skip: { type: 'number' },
+    limit: { type: 'number' }
   },
 
 
@@ -29,8 +29,8 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {name, skip, limit} = inputs;
-      let {user} = this.req;
+      let { name, skip, limit } = inputs;
+      let { user } = this.req;
       if (!name) {
         return exits.fail({
           code: 1,
@@ -38,16 +38,16 @@ module.exports = {
         })
       }
       let friends = await User.getFriends(user.id);
-      friends.filter((e) => {
+      let filteredFriends = friends.filter((e) => {
         let fullName = e.firstName + ' ' + e.lastName;
         return fullName.includes(name)
       })
       limit = limit || 20;
       skip = skip || 0;
-      friends = friends.slice(skip, limit + skip);
+      // friends = friends.slice(skip, limit + skip);
       return exits.success({
         code: 0,
-        data: friends
+        data: filteredFriends
       })
     } catch (error) {
       return exits.serverError({

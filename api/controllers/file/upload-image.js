@@ -46,12 +46,12 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {user} = this.req;
+      let { user } = this.req;
       let w = inputs.width;
       let h = inputs.height;
       let info = await sails.upload(inputs.images);
       if (info.length === 0) {
-        return res.badRequest({
+        return this.res.badRequest({
           message: sails.__('Không có file được upload!'),
         });
       }
@@ -110,7 +110,7 @@ module.exports = {
         }
         fs.unlinkSync(v.fd);
       }
-      let created = await FileUpload.create(filesCreate[0]).fetch();
+      let created = await FileUpload.createEach(filesCreate).fetch();
       return this.res.send({
         code: 0,
         data: created

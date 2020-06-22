@@ -5,11 +5,13 @@
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
  */
 const path = require('path');
+
 module.exports = {
   dir: {
     images: path.join(__dirname, '../../upload/images'),
     other: path.join(__dirname, '../../upload/other'),
     upload: path.join(__dirname, '../../upload'),
+    video: path.join(__dirname, '../../upload/video')
   },
   getFilePath: function (fileUpload) {
     let filePath = path.join(FileUpload.dir[fileUpload.serverFileDir], fileUpload.serverFileName);
@@ -22,6 +24,32 @@ module.exports = {
       return false;
     }
   },
+  getLinkVideo: function (fileUpload) {
+    if (fileUpload.fileType.toLowerCase().includes('video')) {
+      return {
+        status: true,
+        url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+      }
+    } else {
+      return {
+        status: false,
+        url: ""
+      }
+    }
+  },
+  getLinkFile: function (fileUpload) {
+    if (!fileUpload.fileType.toLowerCase().includes('image') && !fileUpload.fileType.toLowerCase().includes('video')) {
+      return {
+        status: true,
+        url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+      }
+    } else {
+      return {
+        status: false,
+        url: ""
+      }
+    }
+  },
   getLinkImage: function (fileUpload) {
     if (!FileUpload.isImage(fileUpload)) {
       return {
@@ -32,7 +60,7 @@ module.exports = {
     return {
       status: true,
       // url: (cacheService.getCacheConfig().base_url || process.env.BASE_URL || sails.config.custom.baseUrl) + '/' + fileUpload.serverFileName
-      url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileName
+      url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
     };
   },
   attributes: {
@@ -64,8 +92,15 @@ module.exports = {
     uploadBy: { model: 'User' }
   },
   customToJSON: function () {
-    let link = FileUpload.getLinkImage(this);
-    if (link.status && this.serverFileDir === 'images') {
+    let link;
+    if (this.serverFileDir === "images") {
+      link = FileUpload.getLinkImage(this);
+    } else if (this.serverFileDir === "video") {
+      link = FileUpload.getLinkVideo(this);
+    } else {
+      link = FileUpload.getLinkFile(this)
+    }
+    if (link.status) {
       this.url = link.url;
     }
     return this;
