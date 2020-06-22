@@ -39,6 +39,10 @@ module.exports = {
     }
 
   },
+  customToJSON: function () {
+    this.comments = []
+    return this;
+  },
 
 };
 

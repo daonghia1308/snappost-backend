@@ -11,8 +11,10 @@ module.exports = {
     content: { type: 'string', required: true },
     totalLike: { type: 'number', defaultsTo: 0 },
     user: { model: 'User' },
-    parent: { type: 'number', defaultsTo: 0 },
-    post: { model: 'Post' }
+    parent: { type: 'string', defaultsTo: "0" },
+    post: { model: 'Post' },
+    upload: { type: 'json', defaultsTo: [] },
+    mentions: { type: 'json', defaultsTo: [] },
   },
 
 };
