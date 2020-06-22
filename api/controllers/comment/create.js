@@ -10,9 +10,10 @@ module.exports = {
   inputs: {
     content: { type: 'string' },
     postId: { type: 'string' },
-    parentId: { type: 'string', description: "Id comment parent" }
+    parentId: { type: 'string', description: "Id comment parent" },
+    upload: { type: 'json' },
+    mentions: { type: 'json' },
   },
-
 
   exits: {
     success: {
@@ -29,7 +30,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let { content, postId, parentId } = inputs;
+      let { content, postId, parentId, upload, mentions } = inputs;
       let { user } = this.req;
       let parent;
       if (!content || !postId) {
@@ -38,14 +39,18 @@ module.exports = {
           message: 'Missing content or postId!'
         })
       }
+      let userInfo = await User.findOne(user.id)
       parent = parentId ? parentId : '0';
       let data = {
         content,
         user: user.id,
         parent,
-        post: postId
+        post: postId,
+        upload,
+        mentions
       }
       let comment = await Comment.create(data).fetch();
+      comment.user = userInfo;
       return exits.success({
         code: 0,
         message: 'Comment created successfully!',

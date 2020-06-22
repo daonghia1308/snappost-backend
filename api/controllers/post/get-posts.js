@@ -57,19 +57,12 @@ module.exports = {
         skip: skip,
         sort: ['created_at DESC', 'ranking DESC']
       }).populate('postBy')
-      // if (findPosts.length > 0) {
-      //   for (let i = 0; i < findPosts.length; i++) {
-      //     let totalComment = await Comment.find({ post: findPosts[i].id });
-      //     findPosts[i].totalComment = totalComment.length;
-      //     findPosts[i].comments = await Comment.find({ post: findPosts[i].id, parent: 0 }).limit(3).populate('user');
-      //     if (findPosts.totalComment > 0) {
-      //       for (let j = 0; i < findPosts[i].comments.length; j++) {
-      //         findPosts[i].comments[j].commentChild = await Comment.find({ parent: findPosts[i].comments[j].id }).populate('user')
-      //         findPosts[i].comments[j].totalCommentChild = findPosts[i].comments[j].commentChild.length;
-      //       }
-      //     }
-      //   }
-      // }
+      if (findPosts.length > 0) {
+        for (let i = 0; i < findPosts.length; i++) {
+          let totalComment = await Comment.count({ post: findPosts[i].id });
+          findPosts[i].totalComment = totalComment;
+        }
+      }
       return exits.success({
         code: 0,
         data: findPosts

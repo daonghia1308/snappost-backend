@@ -8,10 +8,10 @@ module.exports = {
 
 
   inputs: {
-    postId: { type: 'string'},
-    limit: {type: 'number'},
-    skip: {type: 'number'},
-    commentId: {type: 'string'}
+    postId: { type: 'string' },
+    limit: { type: 'number' },
+    skip: { type: 'number' },
+    commentId: { type: 'string' }
   },
 
 
@@ -30,15 +30,15 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {postId, limit, skip, commentId } = inputs;
-      if(!postId) {
+      let { postId, limit, skip, commentId } = inputs;
+      if (!postId) {
         return exits.fail({
           code: 1,
           message: 'Missing postId!'
         })
       }
-      let findPost = await Post.findOne({id: postId});
-      if(!findPost) {
+      let findPost = await Post.findOne({ id: postId });
+      if (!findPost) {
         return exits.fail({
           code: 1,
           message: 'Post not found!'
@@ -46,13 +46,14 @@ module.exports = {
       }
       limit = limit || 5;
       skip = skip || 0;
+      commentId = commentId || 0;
       let findComment = await Comment.find({
         post: postId,
-        parent: commentId ? commentId : '0'
-      }).limit(limit).skip(5).populate('user');
+        parent: commentId
+      }).limit(limit).skip(skip).populate('user');
       if (!commentId) {
         for (let i = 0; i < findComment.length; i++) {
-          findComment[i].commentChild = await Comment.count({parent: findComment[i].id});
+          findComment[i].commentChild = await Comment.count({ parent: findComment[i].id });
         }
       }
       return exits.success({
