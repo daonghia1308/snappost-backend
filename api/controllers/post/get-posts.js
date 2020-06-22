@@ -1,3 +1,4 @@
+
 module.exports = {
 
 
@@ -59,8 +60,10 @@ module.exports = {
       }).populate('postBy')
       if (findPosts.length > 0) {
         for (let i = 0; i < findPosts.length; i++) {
+          let islike = await Like.findOne({ type: 1, user: user.id, idLiked: findPosts[i].id })
           let totalComment = await Comment.count({ post: findPosts[i].id });
           findPosts[i].totalComment = totalComment;
+          findPosts[i].isLike = islike ? true : false;
         }
       }
       return exits.success({

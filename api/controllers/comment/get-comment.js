@@ -31,6 +31,7 @@ module.exports = {
   fn: async function (inputs, exits) {
     try {
       let { postId, limit, skip, commentId } = inputs;
+      let { user } = this.req;
       if (!postId) {
         return exits.fail({
           code: 1,
@@ -54,6 +55,8 @@ module.exports = {
       if (!commentId) {
         for (let i = 0; i < findComment.length; i++) {
           findComment[i].commentChild = await Comment.count({ parent: findComment[i].id });
+          let islike = await Like.findOne({ type: 2, user: user.id, idLiked: findComment[i].id })
+          findComment[i].isLike = islike ? true : false;
         }
       }
       return exits.success({

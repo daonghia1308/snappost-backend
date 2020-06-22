@@ -6,14 +6,13 @@
  */
 
 module.exports = {
-  TYPE: {
-    post: 1,
-    comment: 2
-  },
+
   attributes: {
-    user: {model: 'User'},
-    type: {type: 'number'},
-    idLiked: {type: 'string', description: 'Id cua bai dang duoc like hoac comment dc like'}
+
+    user: { model: 'User' },
+    type: { type: 'number' },
+    idLiked: { type: 'string', description: 'Id cua bai dang duoc like hoac comment dc like' }
+
   },
 
 };

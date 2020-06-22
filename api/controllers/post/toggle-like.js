@@ -44,7 +44,8 @@ module.exports = {
       }
       let findPostLike = await Like.create({
         user: user.id,
-        idLiked: postId
+        idLiked: postId,
+        type: 1
       })
       if (findPostLike) {
         await Like.destroy({

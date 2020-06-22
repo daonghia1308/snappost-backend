@@ -1,4 +1,3 @@
-const Like = require("../../models/Like");
 
 module.exports = {
 
@@ -10,7 +9,7 @@ module.exports = {
 
 
   inputs: {
-    commentId: { type: 'string'}
+    commentId: { type: 'string' }
   },
 
 
@@ -29,8 +28,9 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let {commentId} = inputs;
-      if(!commentId) {
+      let { commentId } = inputs;
+      let { user } = this.req;
+      if (!commentId) {
         return exits.fail({
           code: 1,
           message: 'Missing commentId!'
@@ -39,17 +39,17 @@ module.exports = {
       let findComment = await Comment.findOne({
         id: commentId
       })
-      if(!findComment) {
+      if (!findComment) {
         return exits.fail({
           code: 1,
           message: 'Comment not found!'
         })
       }
       let findCommentLike = await Like.findOne({
-        userId: user.id,
+        user: user.id,
         idLiked: findComment.id
       })
-      if(findCommentLike) {
+      if (findCommentLike) {
         await Like.destroy({
           id: findCommentLike.id
         });
@@ -58,7 +58,7 @@ module.exports = {
       }
       else {
         await Like.create({
-          userId: user.id,
+          user: user.id,
           type: 2,
           idLiked: commentId
         })
