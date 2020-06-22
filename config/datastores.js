@@ -49,7 +49,7 @@ module.exports.datastores = {
     *                                                                          *
     ***************************************************************************/
     adapter: 'sails-mongo',
-    url: 'mongodb://snappost:snappost@cluster0-shard-00-00-dft6q.mongodb.net:27017,cluster0-shard-00-01-dft6q.mongodb.net:27017,cluster0-shard-00-02-dft6q.mongodb.net:27017/snappost?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority',
+    url: 'mongodb://root@localhost:27017/snappost',
 
   },
 
