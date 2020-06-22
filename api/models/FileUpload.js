@@ -28,7 +28,7 @@ module.exports = {
     if (fileUpload.fileType.toLowerCase().includes('video')) {
       return {
         status: true,
-        url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+        url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168:1337/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
       }
     } else {
       return {
@@ -41,7 +41,7 @@ module.exports = {
     if (!fileUpload.fileType.toLowerCase().includes('image') && !fileUpload.fileType.toLowerCase().includes('video')) {
       return {
         status: true,
-        url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+        url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168:1337/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
       }
     } else {
       return {
@@ -60,7 +60,7 @@ module.exports = {
     return {
       status: true,
       // url: (cacheService.getCacheConfig().base_url || process.env.BASE_URL || sails.config.custom.baseUrl) + '/' + fileUpload.serverFileName
-      url: process.env.NODE_ENV === "production" ? 'http://ttkd.gviet.vn:4787/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+      url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168:1337/' : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
     };
   },
   attributes: {
