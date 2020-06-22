@@ -90,7 +90,7 @@ module.exports = {
     cache: 365.25 * 24 * 60 * 60 * 1000, // One year
 
 
-    trustProxy: true,
+    // trustProxy: true,
 
   },
 
@@ -104,7 +104,7 @@ module.exports = {
 
 
   custom: {
-    baseUrl: 'http://35.232.6.168:3000',
+    baseUrl: 'http://35.232.6.168:1337',
     internalEmailAddress: 'support@example.com',
 
     // mailgunDomain: 'mg.example.com',
