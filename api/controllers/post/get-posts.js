@@ -37,7 +37,7 @@ module.exports = {
       let { limit, skip } = inputs;
       let userFriends = await cache.get(`userFriend_${user.id}`);
       let userFriendId = []
-      if (userFriends.length > 0) {
+      if (userFriends && userFriends.length > 0) {
         userFriends.map((e) => {
           userFriendId.push(e.id)
         })
