@@ -52,13 +52,17 @@ module.exports = {
         post: postId,
         parent: commentId
       }).limit(limit).skip(skip).populate('user');
-      if (!commentId) {
-        for (let i = 0; i < findComment.length; i++) {
+
+      for (let i = 0; i < findComment.length; i++) {
+        let islike = await Like.findOne({ type: 2, user: user.id, idLiked: findComment[i].id })
+        findComment[i].isLike = islike ? true : false;
+        if (!commentId || commentId == "0") {
           findComment[i].commentChild = await Comment.count({ parent: findComment[i].id });
-          let islike = await Like.findOne({ type: 2, user: user.id, idLiked: findComment[i].id })
-          findComment[i].isLike = islike ? true : false;
+          findComment[i].reply = [];
+          findComment[i].totalReply = await Comment.count({ post: postId, parent: findComment[i].id })
         }
       }
+
       return exits.success({
         code: 0,
         data: findComment

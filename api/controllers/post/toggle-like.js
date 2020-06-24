@@ -42,7 +42,7 @@ module.exports = {
           message: 'Post Id not exist!'
         })
       }
-      let findPostLike = await Like.create({
+      let findPostLike = await Like.findOne({
         user: user.id,
         idLiked: postId,
         type: 1
@@ -56,7 +56,7 @@ module.exports = {
       }
       else {
         await Like.create({
-          userId: user.id,
+          user: user.id,
           type: 1,
           idLiked: postId
         })
