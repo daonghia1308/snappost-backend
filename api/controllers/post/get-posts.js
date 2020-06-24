@@ -37,9 +37,12 @@ module.exports = {
       let { limit, skip } = inputs;
       let userFriends = await cache.get(`userFriend_${user.id}`);
       let userFriendId = []
-      userFriends.map((e) => {
-        userFriendId.push(e.id)
-      })
+      if (userFriends.length > 0) {
+        userFriends.map((e) => {
+          userFriendId.push(e.id)
+        })
+      }
+
       limit = limit || 10;
       skip = skip || 0;
       let findPosts = await Post.find({
