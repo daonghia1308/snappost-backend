@@ -55,7 +55,7 @@ module.exports = {
       allowOrigins: "*",
       allowCredentials: false,
       // "Access-Control-Allow-Origin": "*",
-      allowRequestHeaders: 'Content-Type, Accept,Authorization',
+      allowRequestHeaders: 'Content-Type, Accept,Authorization, content-type',
       allowRequestMethods: 'GET, POST, PUT,PATCH,DELETE',
     },
 
