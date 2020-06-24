@@ -60,7 +60,7 @@ module.exports = {
     return {
       status: true,
       // url: (cacheService.getCacheConfig().base_url || process.env.BASE_URL || sails.config.custom.baseUrl) + '/' + fileUpload.serverFileName
-      url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+      url: process.env.NODE_ENV === "production" ? 'https://35.232.6.168/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
     };
   },
   attributes: {
