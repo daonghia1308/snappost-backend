@@ -51,8 +51,8 @@ module.exports = {
   security: {
 
     cors: {
-      // allowOrigins: ["http://localhost", "http://35.232.6.168"],
-      allowOrigins: "*",
+      allowOrigins: ["http://localhost", "http://35.232.6.168", "https://snappost.vercel.app"],
+      // allowOrigins: "*",
       allowCredentials: false,
       allowRequestHeaders: 'Content-Type, Accept,Authorization',
       allowRequestMethods: 'GET, POST, PUT,PATCH,DELETE',
@@ -73,7 +73,8 @@ module.exports = {
 
     onlyAllowOrigins: [
       'http://localhost:3000',
-      'http://35.232.6.168:3000'
+      'http://35.232.6.168:3000',
+      "https://snappost.vercel.app/"
     ],
 
 
