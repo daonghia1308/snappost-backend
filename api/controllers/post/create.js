@@ -44,6 +44,11 @@ module.exports = {
         mentions,
         shareBy: null
       }).fetch();
+
+      createPost.postBy = user;
+      createPost.islike = false;
+      createPost.totalComment = 0;
+
       return exits.success({
         code: 0,
         data: createPost
