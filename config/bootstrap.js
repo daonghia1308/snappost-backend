@@ -13,7 +13,9 @@ const path = require('path');
 module.exports.bootstrap = async function () {
 
   await bootstrapAllControllers();
-  await initDatabase();
+  if (process.env.NODE_ENV !== "production") {
+    await initDatabase();
+  }
 };
 
 let bootstrapAllControllers = async () => {
@@ -27,20 +29,18 @@ let bootstrapAllControllers = async () => {
   await Promise.all(promises);
 };
 async function initDatabase() {
-  let userInfo = await User.find({});
-  if (!userInfo) {
-    let folder = path.join(__dirname, '../init');
-    let rs = fs.readdirSync(folder);
-    for (var i = 0; i < rs.length; i++) {
-      try {
-        let data = JSON.parse(fs.readFileSync(path.join(folder, rs[i]), 'utf8'));
-        let model = rs[i].split('.')[0];
-        await sails.models[model].createEach(data);
-      } catch (err) {
-        sails.log(`error on init `, err);
-        continue;
-      }
+  let folder = path.join(__dirname, '../init');
+  let rs = fs.readdirSync(folder);
+  for (var i = 0; i < rs.length; i++) {
+    try {
+      let data = JSON.parse(fs.readFileSync(path.join(folder, rs[i]), 'utf8'));
+      let model = rs[i].split('.')[0];
+      await sails.models[model].createEach(data);
+    } catch (err) {
+      sails.log(`error on init `, err);
+      continue;
     }
+
   }
 
 }
