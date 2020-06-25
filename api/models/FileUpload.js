@@ -28,7 +28,7 @@ module.exports = {
     if (fileUpload.fileType.toLowerCase().includes('video')) {
       return {
         status: true,
-        url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+        url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
       }
     } else {
       return {
@@ -41,7 +41,7 @@ module.exports = {
     if (!fileUpload.fileType.toLowerCase().includes('image') && !fileUpload.fileType.toLowerCase().includes('video')) {
       return {
         status: true,
-        url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
+        url: process.env.NODE_ENV === "production" ? 'http://35.232.6.168/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
       }
     } else {
       return {
