@@ -37,6 +37,7 @@ module.exports = {
       }
     }
   },
+
   getLinkFile: function (fileUpload) {
     if (!fileUpload.fileType.toLowerCase().includes('image') && !fileUpload.fileType.toLowerCase().includes('video')) {
       return {
