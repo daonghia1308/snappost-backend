@@ -20,6 +20,13 @@
  */
 
 module.exports = {
+  hooks: {
+    morgan: false
+  },
+  uploads: {
+    adapter: require('skipper-disk')
+  },
+
 
   datastores: {
 
@@ -30,10 +37,6 @@ module.exports = {
 
     },
 
-  },
-
-  uploads: {
-    adapter: require("skipper-disk")
   },
 
   models: {
