@@ -27,16 +27,14 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false
     },
-    shareBy: {
-      model: 'User'
-    },
     totalLike: {
       type: 'number'
     },
     ranking: {
       type: 'number',
       defaultsTo: 1500
-    }
+    },
+    sharedPost: { model: 'Post' }
 
   },
   customToJSON: function () {
