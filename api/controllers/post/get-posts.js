@@ -72,7 +72,7 @@ module.exports = {
           findPosts[i].totalShare = totalShare;
 
 
-          if (findPosts[i].isShared) {
+          if (findPosts[i].isShared && findPosts[i].sharedPost) {
             let userInfo = await User.findOne(findPosts[i].sharedPost.postBy);
             findPosts[i].sharedPost.postBy = userInfo;
           }

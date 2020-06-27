@@ -48,6 +48,7 @@ module.exports = {
       createPost.postBy = user;
       createPost.islike = false;
       createPost.totalComment = 0;
+      createPost.totalShare = 0;
 
       return exits.success({
         code: 0,
