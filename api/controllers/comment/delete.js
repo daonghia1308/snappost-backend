@@ -34,7 +34,12 @@ module.exports = {
           message: 'Missing commentId!'
         })
       }
-      await Comment.updateOne(commentId, { isDelete: true });
+      let commentInfo = await Comment.findOne(commentId);
+      if (commentInfo.parent == "0") {
+        await Comment.destroy({ parent: commentInfo.id })
+      }
+      await Comment.destroyOne(commentId);
+
       return exits.success({
         code: 0,
         message: 'Comment deleted successfully!'

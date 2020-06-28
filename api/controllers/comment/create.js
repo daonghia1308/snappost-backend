@@ -51,6 +51,8 @@ module.exports = {
       }
       let comment = await Comment.create(data).fetch();
       comment.user = userInfo;
+      comment.reply = [];
+      comment.totalReply = 0
       return exits.success({
         code: 0,
         message: 'Comment created successfully!',

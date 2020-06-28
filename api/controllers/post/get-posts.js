@@ -67,6 +67,7 @@ module.exports = {
           let totalComment = await Comment.count({ post: findPosts[i].id });
           findPosts[i].totalComment = totalComment;
           findPosts[i].isLike = islike ? true : false;
+          findPosts[i].totalReplyComment = await Comment.count({ post: findPosts[i].id, parent: { "!=": "0" } });
 
           let totalShare = await Post.count({ isShared: true, sharedPost: findPosts[i].id });
           findPosts[i].totalShare = totalShare;

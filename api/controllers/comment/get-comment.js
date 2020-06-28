@@ -50,8 +50,10 @@ module.exports = {
       commentId = commentId || 0;
       let findComment = await Comment.find({
         post: postId,
-        parent: commentId
-      }).limit(limit).skip(skip).populate('user');
+        parent: commentId,
+      }).sort(['created_at DESC']).limit(limit).skip(skip).populate('user');
+
+      // findComment.sort((a, b) => a.created_at - b.created_at)
 
       for (let i = 0; i < findComment.length; i++) {
         let islike = await Like.findOne({ type: 2, user: user.id, idLiked: findComment[i].id })
