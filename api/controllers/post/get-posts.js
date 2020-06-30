@@ -14,6 +14,9 @@ module.exports = {
     },
     skip: {
       type: 'number',
+    },
+    userId: {
+      type: "string"
     }
   },
 
@@ -34,7 +37,7 @@ module.exports = {
   fn: async function (inputs, exits) {
     try {
       let { user } = this.req;
-      let { limit, skip } = inputs;
+      let { limit, skip, userId } = inputs;
       let userFriends = await cache.get(`userFriend_${user.id}`);
       let userFriendId = []
       if (userFriends && userFriends.length > 0) {
@@ -45,8 +48,10 @@ module.exports = {
 
       limit = limit || 10;
       skip = skip || 0;
-      let findPosts = await Post.find({
-        where: {
+
+      let where = userId ? {
+        postBy: userId
+      } : {
           or: [
             {
               postBy: { in: userFriendId }
@@ -56,7 +61,9 @@ module.exports = {
             }
           ]
 
-        },
+        }
+      let findPosts = await Post.find({
+        where,
         limit: limit,
         skip: skip,
         sort: ['created_at DESC', 'ranking DESC']
@@ -79,9 +86,17 @@ module.exports = {
           }
         }
       }
+      let totalPost = await Post.count({ where })
+      let isMore;
+      if (totalPost / (skip + limit) > 1) {
+        isMore = true;
+      } else {
+        isMore = false;
+      }
       return exits.success({
         code: 0,
-        data: findPosts
+        data: findPosts,
+        isMore
       })
     } catch (error) {
       return exits.serverError({
