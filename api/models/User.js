@@ -88,7 +88,8 @@ module.exports = {
     bornIn: { type: "string" },
     currentLocation: { type: "string" },
     school: { type: "string" },
-    company: { type: "string" }
+    company: { type: "string" },
+    bio: { type: "string" }
   },
   customToJSON: function () {
     // Return a shallow copy of this record with the password and ssn removed.

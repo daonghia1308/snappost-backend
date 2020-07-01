@@ -12,6 +12,7 @@ module.exports = {
     school: { type: "string" },
     currentLocation: { type: "string" },
     bornIn: { type: "string" },
+    bio: { type: "string" }
   },
 
 
@@ -32,9 +33,9 @@ module.exports = {
 
     try {
       let { user } = this.req
-      let { company, school, currentLocation, bornIn } = inputs;
+      let { company, school, currentLocation, bornIn, bio } = inputs;
       await User.updateOne(user.id, {
-        company, school, currentLocation, bornIn
+        company, school, currentLocation, bornIn, bio
       })
       let userInfo = await User.findOne(user.id)
       return exits.success({

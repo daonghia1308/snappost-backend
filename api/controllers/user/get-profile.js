@@ -39,6 +39,9 @@ module.exports = {
       }
 
       let userInfo = await User.findOne(userId);
+      if (userId == user.id) {
+        userInfo.isMe = true;
+      }
 
       if (!userInfo) {
         return exits.fail({
