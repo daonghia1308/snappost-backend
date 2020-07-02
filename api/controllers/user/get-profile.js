@@ -39,6 +39,12 @@ module.exports = {
       }
 
       let userInfo = await User.findOne(userId);
+      if (!userInfo) {
+        return exits.fail({
+          code: 404,
+          message: "User not exist"
+        })
+      }
       if (userId == user.id) {
         userInfo.isMe = true;
       }

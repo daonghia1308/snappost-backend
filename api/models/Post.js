@@ -34,7 +34,8 @@ module.exports = {
       type: 'number',
       defaultsTo: 1500
     },
-    sharedPost: { model: 'Post' }
+    sharedPost: { model: 'Post' },
+    action: { type: "string", defaultsTo: "" }
 
   },
   customToJSON: function () {

@@ -50,7 +50,8 @@ module.exports = {
         content,
         mentions,
         isShared: true,
-        sharedPost
+        sharedPost,
+        action: " has shared a post."
       }).fetch();
 
       createdPost.postBy = user;
