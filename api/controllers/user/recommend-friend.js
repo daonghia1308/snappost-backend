@@ -36,7 +36,7 @@ module.exports = {
       let { limit, page } = inputs;
       let data = new Set();
       let friendOfFof;
-      limit = limit || 10;
+      limit = limit || 5;
       page = page || 1;
       let offset = (page - 1) * limit;
       let friends = await User.getFriends(user.id);
@@ -49,7 +49,11 @@ module.exports = {
             { school: { contains: user.school } },
             { company: { contains: user.company } },
             { currentLocation: { contains: user.currentLocation } },
-            { bornIn: { contains: user.bornIn } }
+            { bornIn: { contains: user.bornIn } },
+            { school: { startsWith: user.school } },
+            { company: { startsWith: user.company } },
+            { currentLocation: { startsWith: user.currentLocation } },
+            { bornIn: { startsWith: user.bornIn } }
           ],
           // type: 1
         },
