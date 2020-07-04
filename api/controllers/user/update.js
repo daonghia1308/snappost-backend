@@ -12,7 +12,10 @@ module.exports = {
     school: { type: "string" },
     currentLocation: { type: "string" },
     bornIn: { type: "string" },
-    bio: { type: "string" }
+    bio: { type: "string" },
+    nickname: { type: "string" },
+    avatar: { type: "string" },
+    firstUpdate: { type: "boolean" }
   },
 
 
@@ -33,15 +36,27 @@ module.exports = {
 
     try {
       let { user } = this.req
-      let { company, school, currentLocation, bornIn, bio } = inputs;
-      await User.updateOne(user.id, {
-        company, school, currentLocation, bornIn, bio
-      })
+      let { company, school, currentLocation, bornIn, bio, nickname, avatar, firstUpdate } = inputs;
+      if (!firstUpdate) firstUpdate = false;
+
+      if (firstUpdate) {
+        await User.updateOne(user.id, {
+          company, school, currentLocation, bornIn, bio, nickname, avatar, isNewUser: false
+        })
+      } else {
+        await User.updateOne(user.id, {
+          company, school, currentLocation, bornIn, bio, nickname, avatar
+        })
+      }
+
       let userInfo = await User.findOne(user.id)
+      let token = await sails.helpers.jwt.sign(userInfo)
+
       return exits.success({
         code: 0,
         message: "Successfully updated",
-        data: userInfo
+        data: userInfo,
+        token
       })
     } catch (error) {
       return exits.serverError({
