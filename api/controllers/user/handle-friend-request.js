@@ -13,7 +13,7 @@ module.exports = {
       description: 'Id friend request'
     },
     status: {
-      type: 'number', 
+      type: 'number',
       description: '1: accept friend '
     }
   },
@@ -36,7 +36,7 @@ module.exports = {
     try {
       let { id, status } = inputs;
       let { user } = this.req;
-      if (!id || !status) {
+      if (!id || status == undefined) {
         return exits.fail({
           code: 1,
           message: 'Missing data body!'
@@ -45,8 +45,8 @@ module.exports = {
       let findRequest = await FriendRequest.findOne({
         id: id,
         or: [
-          {from: user.id},
-          {to: user.id}
+          { from: user.id },
+          { to: user.id }
         ]
       });
       if (!findRequest) {
@@ -63,12 +63,12 @@ module.exports = {
         })
       }
       await User.refreshFriendCache(findRequest.from);
-      await FriendRequest.destroy({id: findRequest.id});
+      await FriendRequest.destroy({ id: findRequest.id });
       return exits.success({
         code: 0,
         message: "Handle successfully!"
       })
-    } catch (error) { 
+    } catch (error) {
       return exits.serverError({
         code: 1,
         error: error.message

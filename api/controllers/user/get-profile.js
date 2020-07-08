@@ -58,9 +58,36 @@ module.exports = {
 
       let friends = await User.getFriends(user.id);
 
-      if (friends.includes(userInfo.id));
+      let otherFriends = await User.getFriends(userId);
 
-      userInfo.isFriend = true;
+      let friendIds = friends.map(f => {
+        if (f.id !== user.id) {
+          return f.id;
+        }
+      })
+
+      let otherFriendIds = otherFriends.map(f => {
+        if (f.id !== user.id) {
+          return f.id;
+        }
+      })
+
+      let mutualFriend = 0;
+      friendIds.map(f => {
+        if (f !== user.id && f !== userId && otherFriendIds.includes(f)) {
+          mutualFriend++;
+        }
+      })
+
+
+
+      if (friendIds.includes(userInfo.id)) {
+        userInfo.isFriend = true;
+      } else {
+        userInfo.isFriend = false;
+      }
+
+      userInfo.mutualFriend = mutualFriend;
 
       return exits.success({
         code: 0,

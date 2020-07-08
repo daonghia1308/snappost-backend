@@ -71,7 +71,7 @@ module.exports = {
       })
       if (findRequest) {
         await FriendRequest.destroy({ id: findRequest.id });
-        await RelationshipDetail.destroy({user: user.id, otherUser: id, type: 6})
+        await RelationshipDetail.destroy({ user: user.id, otherUser: id, type: 6 })
       }
       else {
         createRequest = await FriendRequest.create({

@@ -1,3 +1,4 @@
+
 module.exports = {
 
 
@@ -44,8 +45,6 @@ module.exports = {
       let fof = await User.find({
         where: {
           or: [
-            // { user: { in: friends } },
-            // { otherUser: { in: friends } },
             { school: { contains: user.school } },
             { company: { contains: user.company } },
             { currentLocation: { contains: user.currentLocation } },
@@ -55,35 +54,42 @@ module.exports = {
             { currentLocation: { startsWith: user.currentLocation } },
             { bornIn: { startsWith: user.bornIn } }
           ],
-          // type: 1
-        },
-        limit: limit,
-        skip: offset
+        }
       })
-      // .populate(['user', 'otherUser'])// friend of friend
       if (fof.length > 0) {
         for (let i = 0; i < fof.length; i++) {
-          if (!friends.includes(fof[i].id)) {
-            let duplicateFriends = new Set();
-            friendOfFof = await User.getFriends(fof[i].id);
-            let numberOfFofId = friendOfFof.map((e) => { return e.id });
-            // let duplicateFriends = friends.filter((e) => { return numberOfFofId.includes(e.id) });
-            friends.map((e) => {
-              if (numberOfFofId.includes(e)) {
-                duplicateFriends.add(e)
-              }
-            })
-            fof[i].mutualFriend = duplicateFriends.size;
-            data.add(fof[i]);
+          if (fof[i].id == user.id) {
+            continue;
+          }
+          let isRequested = await FriendRequest.findOne({
+            from: fof[i].id,
+            to: user.id
+          })
+          let isSentRequest = await FriendRequest.findOne({
+            from: user.id,
+            to: fof[i].id
+          })
+
+          if (isRequested || isSentRequest) {
+            continue;
+          } else {
+            if (!friends.includes(fof[i].id)) {
+              let duplicateFriends = new Set();
+              friendOfFof = await User.getFriends(fof[i].id);
+              let numberOfFofId = friendOfFof.map((e) => { return e.id });
+              // let duplicateFriends = friends.filter((e) => { return numberOfFofId.includes(e.id) });
+              friends.map((e) => {
+                if (numberOfFofId.includes(e)) {
+                  duplicateFriends.add(e)
+                }
+              })
+              fof[i].mutualFriend = duplicateFriends.size;
+              data.add(fof[i]);
+            }
           }
         }
       }
 
-      data.forEach((e) => {
-        if (e.id == user.id) {
-          data.delete(e)
-        }
-      })
       return exits.success({
         code: 0,
         data: [...data]

@@ -1,3 +1,5 @@
+const User = require("../../models/User");
+
 module.exports = {
 
 
@@ -48,7 +50,26 @@ module.exports = {
       data.map((e) => {
         delete e.from.password
       })
-      let totalRecord = await FriendRequest.count();
+
+      let userFriendIds = await User.getFriendIds(user.id)
+
+      for (let i = 0; i < data.length; i++) {
+        let otherFriendIds = await User.getFriendIds(data[i].from.id);
+
+        let mutualFriend = 0;
+        userFriendIds.map(f => {
+          if (f !== user.id && f !== data[i].from.id && otherFriendIds.includes(f)) {
+            mutualFriend++;
+          }
+        })
+        data[i].from.mutualFriend = mutualFriend;
+      }
+
+      let totalRecord = await FriendRequest.count({
+        where: {
+          to: user.id
+        }
+      });
       let totalPage = Math.ceil(totalRecord / limit);
       return exits.success({
         code: 0,
