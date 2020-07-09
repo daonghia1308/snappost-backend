@@ -1,3 +1,5 @@
+const toSlug = require("../../services/toSlug");
+
 module.exports = {
 
 
@@ -63,7 +65,21 @@ module.exports = {
               { school: { startsWith: keyword } },
               { company: { startsWith: keyword } },
               { currentLocation: { startsWith: keyword } },
-              { bornIn: { startsWith: keyword } }
+              { bornIn: { startsWith: keyword } },
+              { email: { contains: keyword.toLowerCase() } },
+              { firstName: { contains: keyword.toLowerCase() } },
+              { lastName: { contains: keyword.toLowerCase() } },
+              { school: { startsWith: keyword.toLowerCase() } },
+              { company: { startsWith: keyword.toLowerCase() } },
+              { currentLocation: { startsWith: keyword.toLowerCase() } },
+              { bornIn: { startsWith: keyword.toLowerCase() } },
+              { email: { contains: toSlug(keyword.toLowerCase()) } },
+              { firstName: { contains: toSlug(keyword.toLowerCase()) } },
+              { lastName: { contains: toSlug(keyword.toLowerCase()) } },
+              { school: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { company: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { currentLocation: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { bornIn: { startsWith: toSlug(keyword.toLowerCase()) } },
             ]
           },
           limit: limit,

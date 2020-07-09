@@ -1,3 +1,5 @@
+const toSlug = require("../../services/toSlug");
+
 module.exports = {
 
 
@@ -50,10 +52,18 @@ module.exports = {
             { company: { contains: user.company } },
             { currentLocation: { contains: user.currentLocation } },
             { bornIn: { contains: user.bornIn } },
-            { school: { startsWith: user.school } },
-            { company: { startsWith: user.company } },
-            { currentLocation: { startsWith: user.currentLocation } },
-            { bornIn: { startsWith: user.bornIn } }
+            { school: { contains: user.school.toLowerCase() } },
+            { company: { contains: user.company.toLowerCase() } },
+            { currentLocation: { contains: user.currentLocation.toLowerCase() } },
+            { bornIn: { contains: user.bornIn.toLowerCase() } },
+            { school: { contains: toSlug(user.school.toLowerCase()) } },
+            { company: { contains: toSlug(user.company.toLowerCase()) } },
+            { currentLocation: { contains: toSlug(user.currentLocation.toLowerCase()) } },
+            { bornIn: { contains: toSlug(user.bornIn.toLowerCase()) } },
+            { school: { contains: toSlug(user.school) } },
+            { company: { contains: toSlug(user.company) } },
+            { currentLocation: { contains: toSlug(user.currentLocation) } },
+            { bornIn: { contains: toSlug(user.bornIn) } }
           ],
           // type: 1
         },
@@ -78,7 +88,6 @@ module.exports = {
           }
         }
       }
-
       data.forEach((e) => {
         if (e.id == user.id) {
           data.delete(e)
