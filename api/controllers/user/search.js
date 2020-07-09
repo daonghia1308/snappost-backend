@@ -1,5 +1,3 @@
-const User = require("../../models/User");
-
 module.exports = {
 
 
@@ -41,11 +39,12 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let { keyword, type } = inputs;
-      let { user } = req;
+      let { keyword, type, limit, offset } = this.req.query;
+      let { user } = this.req;
       let searchResult;
+      let data = [];
       limit = limit || 5;
-      offset = offset || 5;
+      offset = offset || 0;
       if (!keyword || !type) {
         return exits.fail({
           code: 1,
@@ -53,12 +52,11 @@ module.exports = {
         })
       }
       let userFriendsList = await User.getFriends(user.id);
-      userFriendsList.map(e => { return e.id });
+      userFriendsList = userFriendsList.map(e => { return e.id });
       if (type == 1) {
         searchResult = await User.find({
           where: {
             or: [
-              { id: { in: userFriendsList } },
               { email: { contains: keyword } },
               { firstName: { contains: keyword } },
               { lastName: { contains: keyword } },
@@ -69,9 +67,40 @@ module.exports = {
             ]
           },
           limit: limit,
-          skip: offset,
-          sort: 'createdAt ASC'
+          skip: offset
         })
+        for (let i = 0; i < searchResult.length; i++) {
+          if (searchResult[i].id == user.id) {
+            delete searchResult[i];
+          } else {
+            if (userFriendsList.includes(searchResult[i].id)) {
+              searchResult[i].isFriend = true;
+            }
+            else {
+              searchResult[i].isFriend = false;
+              let friendRequest = await FriendRequest.find({ from: user.id, to: searchResult[i].id });
+              if (friendRequest.length > 0) {
+                searchResult[i].statusFriendRequest = "send request"
+                searchResult[i].requestInfo = friendRequest[0]
+              }
+              else {
+                let requestFriend = await FriendRequest.find({ from: searchResult[i].id, to: user.id });
+                if (requestFriend.length > 0) {
+                  searchResult[i].statusFriendRequest = "requested"
+                  searchResult[i].requestInfo = requestFriend[0]
+                }
+                else {
+                  searchResult[i].statusFriendRequest = "none"
+                }
+              }
+
+            }
+            searchResult[i].numberOfFriendMutual = await User.getNumberOfFriendMutual(user.id, searchResult[i].id);
+
+          }
+
+        }
+
       } else {
         searchResult = await Post.find({
           where: {
@@ -79,7 +108,7 @@ module.exports = {
           },
           limit: limit,
           skip: offset,
-          sort: 'createdAt DESC'
+          sort: 'created_at DESC'
         }).populate('postBy');
 
       }
@@ -87,6 +116,7 @@ module.exports = {
         code: 0,
         data: searchResult
       })
+
     } catch (error) {
       return exits.serverError({
         code: 1,
