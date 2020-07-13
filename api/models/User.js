@@ -139,6 +139,14 @@ module.exports = {
       }
     })
     await cache.set(`userFriend_${userId}`, data);
+  },
+  getNumberOfFriendMutual: async (userId, friendId) => {
+    let userFriendList = await User.getFriends(userId);
+    userFriendList = userFriendList.map((e) => { return e.id });
+    let compareUserFriendList = await User.getFriends(friendId);
+    let mutualFriend = compareUserFriendList.map((e) => { return userFriendList.includes(e.id) });
+    return mutualFriend.length;
   }
 };
+
 
