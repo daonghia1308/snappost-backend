@@ -79,6 +79,13 @@ module.exports = {
               { company: { startsWith: toSlug(keyword.toLowerCase()) } },
               { currentLocation: { startsWith: toSlug(keyword.toLowerCase()) } },
               { bornIn: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { email: { contains: toSlug(keyword) } },
+              { firstName: { contains: toSlug(keyword) } },
+              { lastName: { contains: toSlug(keyword) } },
+              { school: { startsWith: toSlug(keyword) } },
+              { company: { startsWith: toSlug(keyword) } },
+              { currentLocation: { startsWith: toSlug(keyword) } },
+              { bornIn: { startsWith: ttoSlug(keyword) } },
             ]
           },
           limit: limit,
@@ -95,17 +102,17 @@ module.exports = {
               searchResult[i].isFriend = false;
               let friendRequest = await FriendRequest.find({ from: user.id, to: searchResult[i].id });
               if (friendRequest.length > 0) {
-                searchResult[i].isSentRequest = 0
+                searchResult[i].isRequest = 0 // gui request
                 searchResult[i].requestId = friendRequest[0].id
               }
               else {
                 let requestFriend = await FriendRequest.find({ from: searchResult[i].id, to: user.id });
                 if (requestFriend.length > 0) {
-                  searchResult[i].isSentRequest = 1
+                  searchResult[i].isRequest = 1 // nhan request
                   searchResult[i].requestInfo = requestFriend[0].id
                 }
                 else {
-                  searchResult[i].isSentRequest = 2
+                  searchResult[i].isRequest = 2 // khong gui loi moi ket ban
                 }
               }
 
@@ -118,13 +125,19 @@ module.exports = {
       } else {
         searchResult = await Post.find({
           where: {
-            content: { contains: keyword }
+            content: { contains: keyword },
+            content: { contains: keyword.toLowerCase() },
+            content: { contains: toSlug(keyword) },
+            content: { contains: toSlug(keyword.toLowerCase()) },
           },
           limit: limit,
           skip: offset,
           sort: 'created_at DESC'
         }).populate('postBy');
-
+        for await (item of searchResult) {
+          let comments = await Comment.find({ post: item.id });
+          item.totalComment = comments.length;
+        }
       }
       return exits.success({
         code: 0,
