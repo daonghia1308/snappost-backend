@@ -70,7 +70,7 @@ module.exports = {
           ],
         },
         limit: limit,
-        offset: offset
+        skip: offset
       })
       if (fof.length > 0) {
         for (let i = 0; i < fof.length; i++) {
