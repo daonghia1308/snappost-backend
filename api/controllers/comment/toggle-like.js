@@ -45,15 +45,16 @@ module.exports = {
           message: 'Comment not found!'
         })
       }
-      let findCommentLike = await Like.findOne({
+      let findCommentLike = await Like.find({
         user: user.id,
         idLiked: findComment.id
       })
-      if (findCommentLike) {
+      if (findCommentLike.length > 0) {
         await Like.destroy({
-          id: findCommentLike.id
+          user: user.id,
+          idLiked: commentId
         });
-        let newTotalLike = findComment.totalLike - 1;
+        let newTotalLike = findComment.totalLike - findCommentLike.length;
         await Comment.update({ id: commentId }).set({ totalLike: newTotalLike });
       }
       else {

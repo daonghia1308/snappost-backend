@@ -1,5 +1,3 @@
-
-const ipLocation = require("ip-location");
 module.exports = {
 
 
