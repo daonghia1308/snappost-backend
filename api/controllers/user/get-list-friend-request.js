@@ -51,10 +51,12 @@ module.exports = {
         delete e.from.password
       })
 
-      let userFriendIds = await User.getFriendIds(user.id)
+      let userFriend = await User.getFriends(user.id)
+      let userFriendIds = userFriend.map(f => f.id);
 
       for (let i = 0; i < data.length; i++) {
-        let otherFriendIds = await User.getFriendIds(data[i].from.id);
+        let otherFriends = await User.getFriends(data[i].from.id);
+        let otherFriendIds = otherFriends.map(i => i.id)
 
         let mutualFriend = 0;
         userFriendIds.map(f => {

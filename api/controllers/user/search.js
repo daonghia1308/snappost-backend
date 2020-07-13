@@ -1,4 +1,3 @@
-const toSlug = require("../../services/toSlug");
 
 module.exports = {
 
@@ -41,7 +40,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let { keyword, type, limit, offset } = this.req.query;
+      let { keyword, type, limit, offset } = inputs;
       let { user } = this.req;
       let searchResult;
       let data = [];
@@ -96,23 +95,22 @@ module.exports = {
               searchResult[i].isFriend = false;
               let friendRequest = await FriendRequest.find({ from: user.id, to: searchResult[i].id });
               if (friendRequest.length > 0) {
-                searchResult[i].statusFriendRequest = "send request"
-                searchResult[i].requestInfo = friendRequest[0]
+                searchResult[i].isSentRequest = 0
+                searchResult[i].requestId = friendRequest[0].id
               }
               else {
                 let requestFriend = await FriendRequest.find({ from: searchResult[i].id, to: user.id });
                 if (requestFriend.length > 0) {
-                  searchResult[i].statusFriendRequest = "requested"
-                  searchResult[i].requestInfo = requestFriend[0]
+                  searchResult[i].isSentRequest = 1
+                  searchResult[i].requestInfo = requestFriend[0].id
                 }
                 else {
-                  searchResult[i].statusFriendRequest = "none"
+                  searchResult[i].isSentRequest = 2
                 }
               }
 
             }
-            searchResult[i].numberOfFriendMutual = await User.getNumberOfFriendMutual(user.id, searchResult[i].id);
-
+            searchResult[i].mutualFriend = await User.getNumberOfFriendMutual(user.id, searchResult[i].id);
           }
 
         }
