@@ -1,4 +1,5 @@
 
+const ipLocation = require("ip-location");
 module.exports = {
 
 
@@ -34,6 +35,13 @@ module.exports = {
   fn: async function (inputs, exits) {
     try {
       let { user } = this.req;
+      if (!user.school && !user.company && !user.currentLocation && !user.bornIn) {
+
+      }
+      user.school = user.school || "";
+      user.company = user.company || "";
+      user.currentLocation = user.currentLocation || "";
+      user.bornIn = user.bornIn || "";
       let { limit, page } = inputs;
       let data = new Set();
       let friendOfFof;
@@ -62,7 +70,9 @@ module.exports = {
             { currentLocation: { contains: toSlug(user.currentLocation) } },
             { bornIn: { contains: toSlug(user.bornIn) } }
           ],
-        }
+        },
+        limit: limit,
+        offset: offset
       })
       if (fof.length > 0) {
         for (let i = 0; i < fof.length; i++) {

@@ -112,7 +112,7 @@ module.exports = {
                   searchResult[i].requestInfo = requestFriend[0].id
                 }
                 else {
-                  searchResult[i].isRequest = 2 // khong gui loi moi ket ban
+                  searchResult[i].isRequest = 2 // chua gui loi moi ket ban
                 }
               }
 
