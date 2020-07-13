@@ -42,16 +42,16 @@ module.exports = {
           message: 'Post Id not exist!'
         })
       }
-      let findPostLike = await Like.findOne({
+      let findPostLike = await Like.find({
         user: user.id,
         idLiked: postId,
         type: 1
       })
-      if (findPostLike) {
+      if (findPostLike.length > 0) {
         await Like.destroy({
           id: findPostLike.id
         });
-        let newTotalLike = findPost.totalLike - 1;
+        let newTotalLike = findPost.totalLike - findPostLike.length;
         await Post.update({ id: postId }).set({ totalLike: newTotalLike });
       }
       else {
