@@ -85,7 +85,7 @@ module.exports = {
               { school: { startsWith: toSlug(keyword) } },
               { company: { startsWith: toSlug(keyword) } },
               { currentLocation: { startsWith: toSlug(keyword) } },
-              { bornIn: { startsWith: ttoSlug(keyword) } },
+              { bornIn: { startsWith: toSlug(keyword) } },
             ]
           },
           limit: limit,
@@ -133,10 +133,21 @@ module.exports = {
           limit: limit,
           skip: offset,
           sort: 'created_at DESC'
-        }).populate('postBy');
+        }).populate('postBy').populate("sharedPost");
         for await (item of searchResult) {
-          let comments = await Comment.find({ post: item.id });
-          item.totalComment = comments.length;
+          let totalComment = await Comment.count({ post: item.id });
+          item.totalComment = totalComment;
+
+          let totalLike = await Like.count({ idLiked: item.id })
+          item.totalLike = totalLike;
+
+          let totalShare = await Post.count({ isShared: true, sharedPost: item.id });
+          item.totalShare = totalShare;
+
+          if (item.isShared && item.sharedPost) {
+            let userInfo = await User.findOne(item.sharedPost.postBy);
+            item.sharedPost.postBy = userInfo;
+          }
         }
       }
       return exits.success({
@@ -155,3 +166,4 @@ module.exports = {
 
 
 };
+
