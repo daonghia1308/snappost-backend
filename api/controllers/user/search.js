@@ -19,7 +19,7 @@ module.exports = {
     limit: {
       type: 'number'
     },
-    offset: {
+    page: {
       type: 'number'
     }
   },
@@ -40,12 +40,14 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let { keyword, type, limit, offset } = inputs;
+      let { keyword, type, limit, page } = inputs;
       let { user } = this.req;
       let searchResult;
-      let data = [];
+      let totalPage;
+      let totalResult;
       limit = limit || 5;
-      offset = offset || 0;
+      page = page || 1;
+      let offset = (page - 1) * limit;
       if (!keyword || !type) {
         return exits.fail({
           code: 1,
@@ -91,6 +93,41 @@ module.exports = {
           limit: limit,
           skip: offset
         })
+        totalResult = await User.count({
+          where: {
+            or: [
+              { email: { contains: keyword } },
+              { firstName: { contains: keyword } },
+              { lastName: { contains: keyword } },
+              { school: { startsWith: keyword } },
+              { company: { startsWith: keyword } },
+              { currentLocation: { startsWith: keyword } },
+              { bornIn: { startsWith: keyword } },
+              { email: { contains: keyword.toLowerCase() } },
+              { firstName: { contains: keyword.toLowerCase() } },
+              { lastName: { contains: keyword.toLowerCase() } },
+              { school: { startsWith: keyword.toLowerCase() } },
+              { company: { startsWith: keyword.toLowerCase() } },
+              { currentLocation: { startsWith: keyword.toLowerCase() } },
+              { bornIn: { startsWith: keyword.toLowerCase() } },
+              { email: { contains: toSlug(keyword.toLowerCase()) } },
+              { firstName: { contains: toSlug(keyword.toLowerCase()) } },
+              { lastName: { contains: toSlug(keyword.toLowerCase()) } },
+              { school: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { company: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { currentLocation: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { bornIn: { startsWith: toSlug(keyword.toLowerCase()) } },
+              { email: { contains: toSlug(keyword) } },
+              { firstName: { contains: toSlug(keyword) } },
+              { lastName: { contains: toSlug(keyword) } },
+              { school: { startsWith: toSlug(keyword) } },
+              { company: { startsWith: toSlug(keyword) } },
+              { currentLocation: { startsWith: toSlug(keyword) } },
+              { bornIn: { startsWith: toSlug(keyword) } },
+            ]
+          }
+        })
+        totalPage = Math.ceil(totalResult / limit);
         for (let i = 0; i < searchResult.length; i++) {
           if (searchResult[i].id == user.id) {
             delete searchResult[i];
@@ -134,6 +171,15 @@ module.exports = {
           skip: offset,
           sort: 'created_at DESC'
         }).populate('postBy').populate("sharedPost");
+        totalResult = await Post.count({
+          where: {
+            content: { contains: keyword },
+            content: { contains: keyword.toLowerCase() },
+            content: { contains: toSlug(keyword) },
+            content: { contains: toSlug(keyword.toLowerCase()) },
+          }
+        })
+        totalPage = Math.ceil(totalResult / limit)
         for await (item of searchResult) {
           let totalComment = await Comment.count({ post: item.id });
           item.totalComment = totalComment;
@@ -152,7 +198,10 @@ module.exports = {
       }
       return exits.success({
         code: 0,
-        data: searchResult
+        data: searchResult,
+        currentPage: page,
+        totalResult,
+        totalPage
       })
 
     } catch (error) {

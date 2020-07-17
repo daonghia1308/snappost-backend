@@ -6,7 +6,10 @@
  */
 
 module.exports = {
-
+  TYPE: {
+    notify: 1,
+    friendRequest: 2
+  },
   attributes: {
     title: {
       type: 'string'
@@ -16,6 +19,16 @@ module.exports = {
     },
     userId: {
       model: "User"
+    },
+    url: {
+      type: "string"
+    },
+    isRead: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    type: {
+      type: "number"
     }
   },
 

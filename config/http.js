@@ -62,7 +62,6 @@ module.exports.http = {
             let { user } = req;
             await User.refreshFriendCache(user.id);
           }
-
         });
         return next();
       }

@@ -53,7 +53,7 @@ module.exports = {
       comment.user = userInfo;
       comment.reply = [];
       comment.totalReply = 0;
-      await sails.helpers.notify.send.with({ title: "test", content: "test", userId: user.id }) 
+      await sails.helpers.notify.send.with({ title: "test", content: "test", userId: user.id })
       return exits.success({
         code: 0,
         message: 'Comment created successfully!',
