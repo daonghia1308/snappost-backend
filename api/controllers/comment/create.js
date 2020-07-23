@@ -40,6 +40,15 @@ module.exports = {
         })
       }
       let userInfo = await User.findOne(user.id)
+      let findPost = await Post.findOne({
+        id: postId
+      })
+      if (!findPost) {
+        return exits.fail({
+          code: 1,
+          message: "postId not exist!"
+        })
+      }
       parent = parentId ? parentId : '0';
       let data = {
         content,
@@ -53,7 +62,21 @@ module.exports = {
       comment.user = userInfo;
       comment.reply = [];
       comment.totalReply = 0;
-      await sails.helpers.notify.send.with({ title: "test", content: "test", userId: user.id })
+      // await sails.helpers.notify.send.with({ title: "test", content: "test", userId: user.id })
+      for (let i = 0; i < upload.length; i++) {
+        await FileUpload.updateOne(upload[i].id, { place: 1 })
+      }
+      await sails.helpers.socket.blast.with({
+        arrayId: [findPost.postBy],
+        event: 'notification',
+        data: { avatar: userInfo.avatar, notification: `${user.firstName} ${user.lastName} has commended on your post!`, time: comment.created_at, url: `/post/${postId}` }
+      })
+      await Notification.create({
+        content: `${user.firstName} ${user.lastName} has commended on your post!`,
+        userId: user.id,
+        url: `/post/${postId}`,
+        type: 1
+      })
       return exits.success({
         code: 0,
         message: 'Comment created successfully!',

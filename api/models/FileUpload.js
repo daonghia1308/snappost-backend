@@ -64,6 +64,10 @@ module.exports = {
       url: process.env.NODE_ENV === "production" ? 'https://35.232.6.168/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName : 'http://localhost:1337/' + fileUpload.serverFileDir + "/" + fileUpload.serverFileName
     };
   },
+  PLACE: {
+    POST: 1,
+    MESSAGE: 2
+  },
   attributes: {
     fileName: {
       type: 'string',
@@ -89,6 +93,10 @@ module.exports = {
     },
     field: {
       type: 'string'
+    },
+    place: {
+      type: 'number',
+      defaultsTo: 0
     },
     uploadBy: { model: 'User' }
   },

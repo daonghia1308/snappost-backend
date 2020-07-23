@@ -1,3 +1,5 @@
+const FileUpload = require("../../models/FileUpload");
+
 module.exports = {
 
 
@@ -49,7 +51,9 @@ module.exports = {
       createPost.islike = false;
       createPost.totalComment = 0;
       createPost.totalShare = 0;
-
+      for (let i = 0; i < upload.length; i++) {
+        await FileUpload.updateOne(upload[i].id, { place: 1 })
+      }
       return exits.success({
         code: 0,
         data: createPost

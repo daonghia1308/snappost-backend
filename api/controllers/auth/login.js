@@ -1,4 +1,3 @@
-const User = require("../../models/User");
 
 module.exports = {
 
@@ -58,11 +57,16 @@ module.exports = {
         })
         let onlineFriends = await User.find({
           id: idFriends,
-          online: true
+          online: true,
+          data: {}
         })
         findUser.totalFriend = totalFriend.length;
         findUser.onlineFriends = onlineFriends
         await User.update({ id: findUser.id }).set({ online: true });
+        await sails.helpers.socket.blast.with({
+          arrayId: idFriends,
+          event: "login"
+        })
         return exits.success({
           code: 0,
           data: findUser,

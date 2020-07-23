@@ -11,9 +11,9 @@ module.exports = {
     friendRequest: 2
   },
   attributes: {
-    title: {
-      type: 'string'
-    },
+    // title: {
+    //   type: 'string'
+    // },
     content: {
       type: 'string'
     },

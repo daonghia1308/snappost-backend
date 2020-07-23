@@ -61,6 +61,9 @@ module.exports = {
           otherUser: findRequest.from,
           type: 1
         })
+        await Chat.create({
+          roomUser: [user.id, findRequest.from]
+        })
       }
       await User.refreshFriendCache(findRequest.from);
       await FriendRequest.destroy({ id: findRequest.id });

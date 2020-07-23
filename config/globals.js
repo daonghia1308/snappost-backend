@@ -48,5 +48,5 @@ module.exports.globals = {
   ****************************************************************************/
   tokenSecret: "condisoraka",
   sails: true,
-
+  imageUrl: process.env.NODE_ENV === "production" ? 'https://35.232.6.168/' : 'http://localhost:1337/' 
 };

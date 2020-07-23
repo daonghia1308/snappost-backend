@@ -1,4 +1,3 @@
-
 module.exports = {
 
 
@@ -65,7 +64,6 @@ module.exports = {
         })
         let newTotalLike = findComment.totalLike + 1;
         await Comment.update({ id: commentId }).set({ totalLike: newTotalLike });
-        
       }
       return exits.success({
         code: 0,

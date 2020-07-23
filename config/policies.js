@@ -21,6 +21,7 @@ module.exports.policies = {
   'auth/login': true,
   'auth/login-social-network': true,
   'user/create': true,
+  'chat/create-room': true,
   docgen: true,
 
 };

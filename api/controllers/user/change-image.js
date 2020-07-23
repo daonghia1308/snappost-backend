@@ -1,3 +1,4 @@
+const FileUpload = require("../../models/FileUpload");
 
 module.exports = {
 
@@ -36,11 +37,13 @@ module.exports = {
         await User.updateOne(user.id, {
           avatar: image.url
         })
-        user.avatar = image.url
+        await FileUpload.updateOne(image.id, { place: 1 })
+        user.avatar = image.url;
       } else {
         await User.updateOne(user.id, {
           wallImage: image.url
         })
+        await FileUpload.updateOne(image.id, { place: 2 })
         user.wallImage = image.url
       }
 
