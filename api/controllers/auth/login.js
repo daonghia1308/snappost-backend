@@ -57,8 +57,7 @@ module.exports = {
         })
         let onlineFriends = await User.find({
           id: idFriends,
-          online: true,
-          data: {}
+          online: true
         })
         findUser.totalFriend = totalFriend.length;
         findUser.onlineFriends = onlineFriends
