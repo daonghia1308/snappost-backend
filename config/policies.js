@@ -21,6 +21,7 @@ module.exports.policies = {
   'auth/login': true,
   'auth/login-social-network': true,
   'user/create': true,
+  "file/upload-image": true,
   docgen: true,
 
 };
