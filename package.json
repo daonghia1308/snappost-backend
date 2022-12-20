@@ -23,7 +23,7 @@
     "sails-hook-sockets": "^2.0.0",
     "sails-hook-uploads": "^0.4.2",
     "sails-mongo": "^1.2.0",
-    "sails-mysql": "^1.0.1",
+    "sails-mysql": "^3.0.0",
     "sharp": "^0.23.4",
     "shortid": "^2.2.15",
     "skipper-disk": "^0.5.12"
